@@ -1,5 +1,7 @@
 # Snake RL — DQN vs PPO vs A2C
 
+![DQN vs PPO vs A2C playing Snake](checkpoints/comparison.gif)
+
 I let 3 RL algorithms fight it out on a Snake game. Here's what I learned.
 
 ---
@@ -42,6 +44,8 @@ Training: 500 episodes each on a 20×20 grid.
 
 DQN converged steadily from the start. PPO was slow to pick up but showed a clear upward trend past episode 300. A2C flatlined throughout all 500 episodes.
 
+![Convergence curves — DQN vs PPO vs A2C](checkpoints/convergence.png)
+
 | Algorithm | Convergence | Notes |
 |---|---|---|
 | DQN | Steady from early episodes | Best overall performer |
@@ -78,7 +82,7 @@ nokia_snake_game/
 │   ├── evaluate.py           # Terminal, video, and benchmark evaluation
 │   ├── plot_convergence.py   # Convergence plot for all algorithms
 │   └── record_comparison.py  # Side-by-side video of all agents
-├── checkpoints/              # Saved model weights and training history
+├── checkpoints/              # Saved model weights, training history, and plots
 ├── outputs/                  # Recorded MP4 videos
 └── requirements.txt
 ```
