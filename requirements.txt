@@ -1,0 +1,5 @@
+gymnasium>=0.29
+numpy>=1.24
+torch>=2.1
+matplotlib>=3.7
+ffmpeg-python>=0.2   # needed by matplotlib FFMpegWriter for video export

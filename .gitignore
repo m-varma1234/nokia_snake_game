@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+# Explicitly track the env/ source package (not a virtualenv)
+!env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Checkpoints — keep history JSONs and plots, ignore large model weights
+checkpoints/*.pt
+
+# Video outputs
+outputs/*.mp4
+outputs/*.avi
+outputs/*.gif
+
+# Logs
+*.log
