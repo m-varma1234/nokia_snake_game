@@ -2,13 +2,13 @@
 
 ![DQN vs PPO vs A2C playing Snake](checkpoints/comparison.gif)
 
-I let 3 RL algorithms fight it out on a Snake game. Here's what I learned.
+Benchmarking DQN, PPO, and A2C on a classic Snake game — training dynamics, failure modes, and takeaways.
 
 ---
 
 ## Building the Environment
 
-I used **PyTorch** and **Gymnasium** to simulate a 20×20 Snake grid environment. Gymnasium provided the standard env interface (`reset`, `step`, `observation`, `reward`) and PyTorch powered the neural networks behind each agent. The snake's entire world — grid state, food placement, and collision detection — was coded from scratch on top of this.
+Built with **PyTorch** and **Gymnasium** on a 20×20 grid. Gymnasium provides the standard environment interface (`reset`, `step`, `observation`, `reward`), and PyTorch powers the neural networks behind each agent. Grid state, food placement, and collision detection are all implemented from scratch.
 
 ---
 
@@ -28,21 +28,21 @@ I used **PyTorch** and **Gymnasium** to simulate a 20×20 Snake grid environment
 ## Algorithms
 
 **DQN (Deep Q-Network)**
-Learns to estimate how good each action is from a given state using a neural network. A replay buffer stores past experiences and resamples them randomly, breaking correlations and stabilizing training.
+Estimates action values from state using a neural network. A replay buffer stores past transitions and resamples them randomly, breaking temporal correlations and stabilizing training.
 
-**PPO (Proximal Policy Optimisation)**
-Directly learns a policy that maps states to action probabilities. It clips updates so the policy never changes too drastically in one step, making convergence conservative but consistent.
+**PPO (Proximal Policy Optimization)**
+Directly learns a policy mapping states to action probabilities. Update steps are clipped so the policy never shifts too drastically at once, making convergence conservative but reliable.
 
 **A2C (Advantage Actor-Critic)**
-Uses two networks together — an Actor that picks actions and a Critic that estimates how good the current state is. The actor improves by taking actions that beat the critic's expectations, which is the "advantage."
+Combines two networks — an Actor that selects actions and a Critic that estimates state value. The Actor is updated using the advantage: how much better an action was than the Critic's baseline expectation.
 
 ---
 
 ## Training Results
 
-Training: 500 episodes each on a 20×20 grid.
+500 episodes each on a 20×20 grid.
 
-DQN converged steadily from the start. PPO was slow to pick up but showed a clear upward trend past episode 300. A2C flatlined throughout all 500 episodes.
+DQN converged steadily from early on. PPO started slowly but showed a clear upward trend after episode 300. A2C flatlined across all 500 episodes.
 
 ![Convergence curves — DQN vs PPO vs A2C](checkpoints/convergence.png)
 
@@ -56,11 +56,11 @@ DQN converged steadily from the start. PPO was slow to pick up but showed a clea
 
 ## Why did A2C fail here?
 
-A2C is built for **parallel environments**. It stabilizes learning by averaging gradients across many simultaneous agents — running it on a single environment starves it of that variance reduction.
+A2C is designed for **parallel environments**. It stabilizes learning by averaging gradients across many simultaneous agents — a single-environment setup denies it that variance reduction.
 
-With mostly sparse rewards throughout an episode, the Critic has almost nothing to learn from early on, so the Actor receives noisy gradient signals and never meaningfully improves.
+Rewards are also sparse: most steps yield nothing, so the Critic learns slowly and the Actor receives noisy gradient signals throughout training.
 
-A2C shines in multi-environment setups with dense rewards — robotics simulations, continuous control tasks, or any setting where feedback is frequent and you can run many instances in parallel.
+A2C excels in multi-environment setups with dense feedback — robotics simulations, continuous control tasks, or any setting where you can run many instances in parallel.
 
 ---
 
