@@ -6,9 +6,9 @@ Benchmarking DQN, PPO, and A2C on a classic Snake game — training dynamics, fa
 
 ---
 
-## Building the Environment
+## Environment Design
 
-Built with **PyTorch** and **Gymnasium** on a 20×20 grid. Gymnasium provides the standard environment interface (`reset`, `step`, `observation`, `reward`), and PyTorch powers the neural networks behind each agent. Grid state, food placement, and collision detection are all implemented from scratch.
+Built with **PyTorch** and **Gymnasium** on a 20×20 grid. Gymnasium provides the standard RL interface (`reset`, `step`, `observation`, `reward`), and PyTorch powers the neural networks behind each agent. Grid state, food placement, and collision detection are implemented from scratch.
 
 ---
 
@@ -31,10 +31,10 @@ Built with **PyTorch** and **Gymnasium** on a 20×20 grid. Gymnasium provides th
 Estimates action values from state using a neural network. A replay buffer stores past transitions and resamples them randomly, breaking temporal correlations and stabilizing training.
 
 **PPO (Proximal Policy Optimization)**
-Directly learns a policy mapping states to action probabilities. Update steps are clipped so the policy never shifts too drastically at once, making convergence conservative but reliable.
+Directly learns a policy that maps states to action probabilities. Update steps are clipped so the policy never shifts too drastically at once, making convergence conservative but reliable.
 
 **A2C (Advantage Actor-Critic)**
-Combines two networks — an Actor that selects actions and a Critic that estimates state value. The Actor is updated using the advantage: how much better an action was than the Critic's baseline expectation.
+Combines two networks — an Actor that selects actions and a Critic that estimates state value. The Actor is updated using the advantage: how much better an action performed relative to the Critic's baseline expectation.
 
 ---
 
@@ -47,7 +47,7 @@ DQN converged steadily from early on. PPO started slowly but showed a clear upwa
 ![Convergence curves — DQN vs PPO vs A2C](checkpoints/convergence.png)
 
 | Algorithm | Convergence | Notes |
-|---|---|---|
+|-----------|-------------|-------|
 | DQN | Steady from early episodes | Best overall performer |
 | PPO | Slow start, picks up after ep 300 | Consistent but conservative |
 | A2C | Flatlined throughout | Single-env setup starves it |
@@ -139,7 +139,7 @@ python scripts/evaluate.py --mode terminal --episodes 5
 ### Record an MP4
 
 ```bash
-# Requires ffmpeg: brew install ffmpeg
+# Requires ffmpeg — install with: brew install ffmpeg
 python scripts/evaluate.py --mode video --output snake_play.mp4
 ```
 
@@ -210,7 +210,7 @@ outputs/
 ## Observation Space (11 floats)
 
 | Index | Feature | Description |
-|---|---|---|
+|-------|---------|-------------|
 | 0 | `danger_straight` | Is the cell directly ahead a wall or snake body? |
 | 1 | `danger_right` | Same check one step to the right of current heading |
 | 2 | `danger_left` | Same check one step to the left |
